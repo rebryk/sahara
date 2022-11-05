@@ -20,3 +20,7 @@ def query():
         response.headers["Cache-Control"] = "s-maxage=86400"
     except Exception as e:
         return flask.jsonify({"error": str(e)}), http.HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+if __name__ == "__main__":
+    app.run()
