@@ -43,7 +43,6 @@ def get_documents(df: pd.DataFrame) -> List:
 
 
 def _validate_vector(u, dtype=None):
-    # XXX Is order='c' really necessary?
     u = np.asarray(u, dtype=dtype, order='c')
     if u.ndim == 1:
         return u
@@ -99,9 +98,6 @@ def distances_from_embeddings(
 def embedding_from_string(string: str, engine: str = ENGINE) -> List:
     if (string, engine) not in EMBEDDING_CACHE.keys():
         EMBEDDING_CACHE[(string, engine)] = get_embedding(string, engine)
-
-        with open(EMBEDDING_CACHE_PATH, "wb") as embedding_cache_file:
-            pickle.dump(EMBEDDING_CACHE, embedding_cache_file)
 
     return EMBEDDING_CACHE[(string, engine)]
 

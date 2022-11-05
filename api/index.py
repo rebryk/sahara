@@ -16,6 +16,7 @@ def query():
         return flask.jsonify({"error": "please, provide query field"}), http.HTTPStatus.BAD_REQUEST
 
     try:
-        return flask.jsonify(search.search(query))
+        response = flask.jsonify(search.search(query))
+        response.headers["Cache-Control"] = "s-maxage=86400"
     except Exception as e:
         return flask.jsonify({"error": str(e)}), http.HTTPStatus.INTERNAL_SERVER_ERROR
