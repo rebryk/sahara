@@ -1,2 +1,3 @@
 flask==2.2.2
 openai
+tenacity
