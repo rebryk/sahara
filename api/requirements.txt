@@ -1,0 +1,6 @@
+flask==2.2.2
+openai
+plotly
+matplotlib
+scipy
+sklearn
