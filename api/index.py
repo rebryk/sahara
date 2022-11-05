@@ -18,6 +18,7 @@ def query():
     try:
         response = flask.jsonify(search.search(query))
         response.headers["Cache-Control"] = "s-maxage=86400"
+        return response
     except Exception as e:
         return flask.jsonify({"error": str(e)}), http.HTTPStatus.INTERNAL_SERVER_ERROR
 
