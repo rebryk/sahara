@@ -15,4 +15,7 @@ def query():
     if query is None:
         return flask.jsonify({"error": "please, provide query field"}), http.HTTPStatus.BAD_REQUEST
 
-    return flask.jsonify(search.search(query))
+    try:
+        return flask.jsonify(search.search(query))
+    except Exception as e:
+        return flask.jsonify({"error": str(e)}), http.HTTPStatus.INTERNAL_SERVER_ERROR
