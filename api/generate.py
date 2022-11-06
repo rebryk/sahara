@@ -22,6 +22,7 @@ def generate_prompt(query: str) -> str:
         if len(prompt) >= MAX_LENGTH:
             break
 
+    query = search.normalize(query)
     prompt += f"/* Write SQL query: {query} */\n"
     return prompt
 

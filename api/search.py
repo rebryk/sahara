@@ -1,6 +1,8 @@
+import re
 import os
 import openai
 import pickle
+
 import numpy as np
 import pandas as pd
 
@@ -23,19 +25,35 @@ try:
 except FileNotFoundError:
     EMBEDDING_CACHE = {}
 
+MAPPING = {
+    "mau": "monthly active users",
+    "dau": "daily active user",
+    "eth": "ethereum",
+    "sol": "solana",
+    "bnb": "binance",
+    "lens": "lens protocol",
+    "ens": "ethereum name service",
+}
+
+
+def normalize(text: str) -> str:
+    words = re.split("[,.!?:() ]", text)
+    words = [w.lower() for w in words if len(w) > 0]
+    words = [MAPPING.get(w, w) for w in words]
+    return " ".join(words)
+
 
 def read_data(path: str) -> pd.DataFrame:
     df = pd.read_csv(path)
-    # df = df.drop_duplicates(subset="id", keep="first")
-    # df = df.drop_duplicates(subset="name", keep="first")
-    df = df.reset_index(drop=True)
+    df = df.fillna("")
     return df
 
 
 def get_documents(df: pd.DataFrame) -> List:
     documents = []
     for _, query in df.iterrows():
-        content = f"{query['name']} {query.description or ''}".strip()
+        content = f"{query['name']} {query['description']}".strip()
+        content = normalize(content)
         document = {"id": query.id, "content": content}
         documents.append(document)
 
@@ -134,6 +152,8 @@ documents = get_documents(data)
 
 
 def search(query: str) -> dict:
+    query = normalize(query)
+
     results = []
     for document in find_best_documents(query, documents, count=3):
         raw_doc = data.iloc[document["index"]]
