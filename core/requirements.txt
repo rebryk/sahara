@@ -1,0 +1,9 @@
+pandas
+openai
+plotly
+matplotlib
+scipy
+sklearn
+selenium
+webdriver-manager
+beautifulsoup4
