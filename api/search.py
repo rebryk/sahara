@@ -141,5 +141,5 @@ def search(query: str) -> dict:
         "name": raw_doc["name"],
         "distance": document["distance"],
         "sql": raw_doc["query"],
-        "type": raw_doc["type"],
+        "visualizations": raw_doc["visualizations"],
     }
