@@ -31,7 +31,7 @@ def generate_sql(query: str) -> dict:
     result = search.openai.Completion.create(
         model="code-davinci-002",
         prompt=prompt,
-        max_tokens=512,
+        max_tokens=1024,
         temperature=0,
         stop=["STOP", "/* Write SQL"],
     )
