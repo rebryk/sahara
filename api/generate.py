@@ -34,6 +34,7 @@ def generate_sql(query: str) -> dict:
         max_tokens=1024,
         temperature=0,
         stop=["STOP", "/* Write SQL"],
+        timeout=300,
     )
 
     return {"sql": result.choices[0].text.strip()}
