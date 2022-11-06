@@ -29,8 +29,9 @@ HEADERS = {
 def search_request():
     query = request.args.get("query", None)
 
-    if cache.has(query):
-        return cache.get(query)
+    key = f"search-{query}"
+    if cache.has(key):
+        return cache.get(key)
 
     if query is None:
         return flask.jsonify({"error": "please, provide query field"}), http.HTTPStatus.BAD_REQUEST
@@ -38,7 +39,7 @@ def search_request():
     try:
         response = flask.jsonify(search.search(query))
         response.headers["Cache-Control"] = "s-maxage=86400"
-        cache.set(query, response)
+        cache.set(key, response)
         return response
     except Exception as e:
         return flask.jsonify({"error": str(e)}), http.HTTPStatus.INTERNAL_SERVER_ERROR
@@ -48,8 +49,9 @@ def search_request():
 def generate_request():
     query = request.args.get("query", None)
 
-    if cache.has(query):
-        return cache.get(query)
+    key = f"generate-{query}"
+    if cache.has(key):
+        return cache.get(key)
 
     if query is None:
         return flask.jsonify({"error": "please, provide query field"}), http.HTTPStatus.BAD_REQUEST
@@ -57,7 +59,7 @@ def generate_request():
     try:
         response = flask.jsonify(generate.generate_sql(query))
         response.headers["Cache-Control"] = "s-maxage=86400"
-        cache.set(query, response)
+        cache.set(key, response)
         return response
     except Exception as e:
         return flask.jsonify({"error": str(e)}), http.HTTPStatus.INTERNAL_SERVER_ERROR
@@ -70,7 +72,6 @@ def graphql_proxy():
         response = requests.post(
             "https://core-hsr.dune.com/v1/graphql", json=data, headers=HEADERS
         )
-        print(response.__dict__)
         return response.json()
     except Exception as e:
         return flask.jsonify({"error": str(e)}), http.HTTPStatus.INTERNAL_SERVER_ERROR
