@@ -26,8 +26,8 @@ except FileNotFoundError:
 
 def read_data(path: str) -> pd.DataFrame:
     df = pd.read_csv(path)
-    df = df.drop_duplicates(subset="id", keep="first")
-    df = df.drop_duplicates(subset="name", keep="first")
+    # df = df.drop_duplicates(subset="id", keep="first")
+    # df = df.drop_duplicates(subset="name", keep="first")
     df = df.reset_index(drop=True)
     return df
 
