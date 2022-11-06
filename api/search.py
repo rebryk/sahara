@@ -150,8 +150,6 @@ documents = get_documents(data)
 
 
 def search(query: str) -> dict:
-    query = normalize(query)
-
     results = []
     for document in find_best_documents(query, documents, count=3):
         raw_doc = data.iloc[document["index"]]

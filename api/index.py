@@ -28,8 +28,9 @@ HEADERS = {
 @app.route('/search/', methods=["GET"])
 def search_request():
     query = request.args.get("query", None)
+    query = search.normalize(query)
 
-    key = f"search-{query}"
+    key = f"search: {query}"
     if cache.has(key):
         return cache.get(key)
 
@@ -38,7 +39,6 @@ def search_request():
 
     try:
         response = flask.jsonify(search.search(query))
-        response.headers["Cache-Control"] = "s-maxage=86400"
         cache.set(key, response)
         return response
     except Exception as e:
@@ -48,8 +48,9 @@ def search_request():
 @app.route('/generate/', methods=["GET"])
 def generate_request():
     query = request.args.get("query", None)
+    query = search.normalize(query)
 
-    key = f"generate-{query}"
+    key = f"generate: {query}"
     if cache.has(key):
         return cache.get(key)
 
@@ -58,7 +59,6 @@ def generate_request():
 
     try:
         response = flask.jsonify(generate.generate_sql(query))
-        response.headers["Cache-Control"] = "s-maxage=86400"
         cache.set(key, response)
         return response
     except Exception as e:
