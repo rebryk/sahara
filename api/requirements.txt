@@ -1,4 +1,5 @@
 flask==2.2.2
+flask-cors
 openai
 tenacity
 gunicorn

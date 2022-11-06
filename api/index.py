@@ -3,9 +3,10 @@ import search
 import http
 
 from flask import request
-
+from flask_cors import CORS
 
 app = flask.Flask(__name__)
+cors = CORS(app)
 
 
 @app.route('/search/', methods=["GET"])
