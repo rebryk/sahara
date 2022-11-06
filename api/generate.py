@@ -31,10 +31,11 @@ def generate_sql(query: str) -> dict:
     result = search.openai.Completion.create(
         model="code-davinci-002",
         prompt=prompt,
-        max_tokens=1024,
+        max_tokens=2056,
         temperature=0,
         stop=["STOP", "/* Write SQL"],
         timeout=300,
+        request_timeout=300,
     )
 
     return {"sql": result.choices[0].text.strip()}
