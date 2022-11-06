@@ -134,12 +134,19 @@ documents = get_documents(data)
 
 
 def search(query: str) -> dict:
-    document = find_best_documents(query, documents, count=1)[0]
-    raw_doc = data.iloc[document["index"]]
-    return {
-        "query_id": document["id"],
-        "name": raw_doc["name"],
-        "distance": document["distance"],
-        "sql": raw_doc["query"],
-        "visualizations": raw_doc["visualizations"],
-    }
+    documents = find_best_documents(query, documents, count=3)
+
+    results = []
+    for document in documents:
+        raw_doc = data.iloc[document["index"]]
+        results.append(
+            {
+                "query_id": document["id"],
+                "name": raw_doc["name"],
+                "distance": document["distance"],
+                "sql": raw_doc["query"],
+                "visualizations": raw_doc["visualizations"],
+            }
+        )
+
+    return {"results": results}
