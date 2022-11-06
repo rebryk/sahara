@@ -26,9 +26,11 @@ HEADERS = {
 
 
 @app.route('/search/', methods=["GET"])
-@cache.cached(timeout=3600)
 def search_request():
     query = request.args.get("query", None)
+
+    if query in cache:
+        return cache.get(query)
 
     if query is None:
         return flask.jsonify({"error": "please, provide query field"}), http.HTTPStatus.BAD_REQUEST
@@ -36,15 +38,18 @@ def search_request():
     try:
         response = flask.jsonify(search.search(query))
         response.headers["Cache-Control"] = "s-maxage=86400"
+        cache.set(query, response)
         return response
     except Exception as e:
         return flask.jsonify({"error": str(e)}), http.HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/generate/', methods=["GET"])
-@cache.cached(timeout=3600)
 def generate_request():
     query = request.args.get("query", None)
+
+    if query in cache:
+        return cache.get(query)
 
     if query is None:
         return flask.jsonify({"error": "please, provide query field"}), http.HTTPStatus.BAD_REQUEST
@@ -52,6 +57,7 @@ def generate_request():
     try:
         response = flask.jsonify(generate.generate_sql(query))
         response.headers["Cache-Control"] = "s-maxage=86400"
+        cache.set(query, response)
         return response
     except Exception as e:
         return flask.jsonify({"error": str(e)}), http.HTTPStatus.INTERNAL_SERVER_ERROR

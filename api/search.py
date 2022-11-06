@@ -1,7 +1,6 @@
 import re
 import os
 import openai
-import pickle
 
 import numpy as np
 import pandas as pd
@@ -33,6 +32,11 @@ MAPPING = {
     "bnb": "binance",
     "lens": "lens protocol",
     "ens": "ethereum name service",
+    "tvl": "total value locked",
+    "avg": "average",
+    "mean": "average",
+    "tx": "transcation",
+    "$": "dollars",
 }
 
 
@@ -50,13 +54,7 @@ def read_data(path: str) -> pd.DataFrame:
 
 
 def get_documents(df: pd.DataFrame) -> List:
-    documents = []
-    for _, query in df.iterrows():
-        content = f"{query['name']} {query['description']}".strip()
-        content = normalize(content)
-        document = {"id": query.id, "content": content}
-        documents.append(document)
-
+    documents = [{"id": query.id, "content": query.content} for _, query in df.iterrows()]
     return documents
 
 
