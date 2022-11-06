@@ -3,6 +3,7 @@ import flask
 import search
 import generate
 import requests
+import flask_caching
 
 from flask import request
 from flask_cors import CORS
@@ -10,6 +11,12 @@ from flask_cors import CORS
 app = flask.Flask(__name__)
 cors = CORS(app)
 
+config = {
+    "CACHE_TYPE": "SimpleCache",
+    "CACHE_DEFAULT_TIMEOUT": 3600,
+}
+app.config.from_mapping(config)
+cache = flask_caching.Cache(app)
 
 HEADERS = {
     "content-type": "application/json",
@@ -19,6 +26,7 @@ HEADERS = {
 
 
 @app.route('/search/', methods=["GET"])
+@cache.cached(timeout=3600)
 def search_request():
     query = request.args.get("query", None)
 
@@ -34,6 +42,7 @@ def search_request():
 
 
 @app.route('/generate/', methods=["GET"])
+@cache.cached(timeout=3600)
 def generate_request():
     query = request.args.get("query", None)
 
