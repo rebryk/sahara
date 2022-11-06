@@ -29,7 +29,7 @@ HEADERS = {
 def search_request():
     query = request.args.get("query", None)
 
-    if query in cache:
+    if cache.has(query):
         return cache.get(query)
 
     if query is None:
@@ -48,7 +48,7 @@ def search_request():
 def generate_request():
     query = request.args.get("query", None)
 
-    if query in cache:
+    if cache.has(query):
         return cache.get(query)
 
     if query is None:
