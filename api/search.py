@@ -8,6 +8,10 @@ import pandas as pd
 from typing import List
 
 from tenacity import retry, stop_after_attempt, wait_random_exponential
+from openai.api_resources.abstract import engine_api_resource
+
+# Override MAX_TIMEOUT
+engine_api_resource.MAX_TIMEOUT = 300
 
 ORGANIZATION = os.getenv("ORGANIZATION")
 API_KEY = os.getenv("API_KEY")
