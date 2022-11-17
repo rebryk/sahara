@@ -1,9 +1,11 @@
 # Sahara: web3 analytics for humans
 
 ## About
+**Updated: [Showcase](https://ethglobal.com/showcase/sahara-web3-analytics-for-humans-5i3d5)**
+
 Ask any questions you have, and get visualized answer instantly! Yeah, it's like [Dune](dune.com), but with human words instead of SQL.
 
-<img width="1512" alt="Sahara" src="https://user-images.githubusercontent.com/4231665/200167877-57f41381-d27a-48ce-9132-a210c49216d6.png">
+https://user-images.githubusercontent.com/4231665/202467914-ad657530-2bb0-4783-acba-d6210a2c372b.mp4
 
 ## Overview
 
